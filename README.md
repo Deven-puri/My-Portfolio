@@ -2,9 +2,8 @@
 
 A sleek, modern, and responsive portfolio bootstrapped with [create-t3-app](https://create.t3.gg/).
 
-[Website Preview](https://github.com/wendoj/portfolio/assets/77996774/b73b02d7-0657-41e3-9124-e6d04b17fe93)
+[🔗 Live Portfolio](https://my-portfolio-six-navy-66.vercel.app/)
 
-[🔗 Link to portfolio](https://wendoj.vercel.app)
 [//]: # (---)
 
 ## 📦 Recent Updates
@@ -12,8 +11,10 @@ A sleek, modern, and responsive portfolio bootstrapped with [create-t3-app](http
 ### Footer Component Enhancement
 The footer has been updated for improved design and usability. See `src/components/Footer.tsx` for the latest changes. If you have feedback or suggestions, feel free to open an issue or pull request.
 
+
 All you need to know about me, my projects and skills can be found here. Personalize the portfolio by modifying `src/pages/index.tsx` and `src/styles/globals.css` to emulate your own portfolio. Made some improvements and want to share? Open a pull request.
-For any issues, feel free to report them here.
+
+For any issues, feel free to report them [here](https://github.com/Deven-puri/My-Portfolio/issues).
 
 ## 🎉 Features
 - **Responsive Design**: The portfolio is designed to be fully responsive, providing an optimal viewing experience across a wide range of devices from desktops to mobile phones.
@@ -34,28 +35,41 @@ Follow the steps below to clone and run this project on your local system:
 
 ```bash
 # Clone the repository
-$ git clone https://github.com/wendoj/developer-portfolio.git
+
+$ git clone https://github.com/Deven-puri/My-Portfolio.git
 
 # Navigate to the project directory
-$ cd developer-portfolio
+$ cd New-portfolio-2
 
 # Remove current origin repository
 $ git remote remove origin
 ```
 
-<br />
+
 
 Then install the required dependencies:
 ```bash
 # Install dependencies
-$ npm install
+
+$ npm install # or pnpm install
 
 # Start the development server:
 $ npm run dev
 ```
-Now, open your browser and navigate to `http://localhost:3000` to view your portfolio live.
+
+Now, open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view your portfolio live.
 
 
 ## How do I deploy this?
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+
+You can deploy this portfolio easily using:
+- [Vercel](https://create.t3.gg/en/deployment/vercel)
+- [Netlify](https://create.t3.gg/en/deployment/netlify)
+- [Docker](https://create.t3.gg/en/deployment/docker)
+
+---
+
+## 🙋‍♂️ Contact
+
+For questions, suggestions, or collaboration, please reach out via [GitHub Issues](https://github.com/Deven-puri/My-Portfolio/issues) or connect with me on [LinkedIn](https://www.linkedin.com/in/devenpuri/).
