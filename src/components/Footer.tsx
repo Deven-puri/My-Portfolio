@@ -51,7 +51,6 @@ export default function Footer() {
   <img className="bg translate-x-0 hover:translate-x-1 transition-transform"
     src="https://imgs.search.brave.com/CsEoLEUpQ5LI_L08GsryeVWv3MwJECUg9u4u8cwyQXo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAxNi8w/NC9HaXRodWItUE5H/LUltYWdlLnBuZw"
     alt="GitHub"
-    className="h-8 w-8 hover:opacity-80 transition"
   />
 </a>
 
@@ -63,7 +62,6 @@ export default function Footer() {
   <img className="bg translate-x-0 hover:translate-x-1 transition-transform"
     src="https://imgs.search.brave.com/7J5q-_AIUHMuj3gcI6erl9Pqtsz4PnQ3lbvwsOb0pDc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMTMvTGlu/a2VkaW4tTG9nby1Q/TkctUGljdHVyZS5w/bmc"
     alt="LinkedIn"
-    className="h-8 w-8 hover:opacity-80 transition"
   />
 </a>
 
