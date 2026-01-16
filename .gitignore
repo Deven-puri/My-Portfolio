@@ -41,6 +41,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
+# PWA generated files
+public/service-worker.js
+public/workbox-*.js
+
 # webstorm
 .idea
 ```
