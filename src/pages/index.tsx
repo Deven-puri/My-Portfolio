@@ -9,15 +9,24 @@ import {
   SearchCheck,
   Eye,
   MonitorSmartphone,
+  FileText,
 } from "lucide-react";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
-import Spline from "@splinetool/react-spline";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { cn, scrollTo } from "@/lib/utils";
-import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import VanillaTilt from "vanilla-tilt";
 import { motion } from "framer-motion";
+
+// Lazy load heavy components
+const Spline = dynamic(() => import("@splinetool/react-spline"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center bg-primary/5 rounded-3xl">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+    </div>
+  ),
+});
 
 const aboutStats = [
   { label: "Years of experience", value: "1+" },
@@ -84,24 +93,99 @@ export default function Home() {
   const refScrollContainer = useRef(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
+  const [splineLoaded, setSplineLoaded] = useState<boolean>(false);
+  const [visibleVideos, setVisibleVideos] = useState<Set<string>>(new Set());
 
   // Set client-side flag to prevent hydration mismatch
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // handle scroll
+  // Lazy load Spline only when in viewport
   useEffect(() => {
+    if (!isClient) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !splineLoaded) {
+            setSplineLoaded(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const splineContainer = document.getElementById("canvas-container");
+    if (splineContainer) {
+      observer.observe(splineContainer);
+    }
+
+    return () => observer.disconnect();
+  }, [isClient, splineLoaded]);
+
+  // Lazy load videos when in viewport
+  useEffect(() => {
+    if (!isClient) return;
+
+    const loadedVideos = new Set<string>();
+
+    const videoObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const video = entry.target as HTMLVideoElement;
+            const src = video.getAttribute("data-src");
+            if (src && !loadedVideos.has(src)) {
+              loadedVideos.add(src);
+              video.src = src;
+              video.load();
+              setVisibleVideos((prev) => new Set(prev).add(src));
+              videoObserver.unobserve(video);
+            }
+          }
+        });
+      },
+      { rootMargin: "100px" }
+    );
+
+    // Use setTimeout to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      const videos = document.querySelectorAll("video[data-src]");
+      videos.forEach((video) => videoObserver.observe(video));
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      videoObserver.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isClient]);
+
+  // handle scroll - lazy load locomotive scroll
+  useEffect(() => {
+    if (!isClient) return;
+
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
 
-    async function getLocomotive() {
+    type LocomotiveInstance = {
+      destroy: () => void;
+    };
+    let locomotiveInstance: LocomotiveInstance | null = null;
+
+    // Only load locomotive scroll after initial render
+    const loadLocomotive = async () => {
+      // Small delay to prioritize initial content
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      
       const Locomotive = (await import("locomotive-scroll")).default;
-      new Locomotive({
+      locomotiveInstance = new Locomotive({
         el: refScrollContainer.current ?? new HTMLElement(),
         smooth: true,
-      });
-    }
+      }) as LocomotiveInstance;
+    };
 
     function handleScroll() {
       let current = "";
@@ -116,35 +200,22 @@ export default function Home() {
 
       navLinks.forEach((li) => {
         li.classList.remove("nav-active");
-
         if (li.getAttribute("href") === `#${current}`) {
           li.classList.add("nav-active");
-          console.log(li.getAttribute("href"));
         }
       });
     }
 
-    void getLocomotive();
-    window.addEventListener("scroll", handleScroll);
+    void loadLocomotive();
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      if (locomotiveInstance) {
+        locomotiveInstance.destroy();
+      }
     };
-  }, []);
-
-
-  // card hover effect
-  useEffect(() => {
-    const tilt: HTMLElement[] = Array.from(document.querySelectorAll("#tilt"));
-    VanillaTilt.init(tilt, {
-      speed: 300,
-      glare: true,
-      "max-glare": 0.1,
-      gyroscope: true,
-      perspective: 900,
-      scale: 0.9,
-    });
-  }, []);
+  }, [isClient]);
 
   return (
     <Container>
@@ -201,19 +272,33 @@ export default function Home() {
               className="flex flex-row items-center space-x-1.5 pt-6"
             >
               <Button asChild>
-                <Link
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=devenpuri03@gmail.com"
+                <a
+                  href="mailto:devenpuri03@gmail.com?subject=Portfolio%20Inquiry&body=Hello%20Deven,%0D%0A%0D%0AI%20would%20like%20to%20get%20in%20touch%20with%20you."
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Get in touch <ChevronRight className="ml-1 h-4 w-4" />
-                </Link>
+                </a>
               </Button>
               <Button
                 variant="outline"
                 onClick={() => scrollTo(document.querySelector("#about"))}
               >
                 Learn more
+              </Button>
+              <Button
+                variant="outline"
+                asChild
+              >
+                <a
+                  href="/DevenPuri.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download="DevenPuri_Resume.pdf"
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  Resume
+                </a>
               </Button>
             </span>
 
@@ -230,12 +315,22 @@ export default function Home() {
           <div
             data-scroll
             data-scroll-speed="-.01"
-            id={styles["canvas-container"]}
+            id="canvas-container"
             className="mt-14 h-full w-full xl:mt-0"
           >
-            <Suspense fallback={<span>Loading...</span>}>
-              <Spline scene="/assets/scene.splinecode" />
-            </Suspense>
+            {splineLoaded ? (
+              <Suspense fallback={
+                <div className="flex h-full w-full items-center justify-center bg-primary/5 rounded-3xl">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                </div>
+              }>
+                <Spline scene="/assets/scene.splinecode" />
+              </Suspense>
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-primary/5 rounded-3xl">
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              </div>
+            )}
           </div>
         </section>
 
@@ -318,19 +413,23 @@ export default function Home() {
                     className="flex-shrink-0 w-full md:w-[600px]"
                   >
                     <Link href={project.href} target="_blank" passHref className="block">
-                      <Card id="tilt" className="h-full transition-transform hover:scale-[1.02] cursor-pointer">
+                      <Card className="h-full transition-transform hover:scale-[1.02] cursor-pointer">
                         <CardHeader className="p-0">
                           {isClient ? (
                             <video
-                              src={project.image}
+                              data-src={project.image}
                               autoPlay
                               loop
                               muted
                               playsInline
                               className="aspect-video h-full w-full rounded-t-md bg-primary object-cover"
+                              poster=""
+                              preload="none"
                             />
                           ) : (
-                            <div className="aspect-video h-full w-full rounded-t-md bg-primary object-cover" />
+                            <div className="aspect-video h-full w-full rounded-t-md bg-primary object-cover flex items-center justify-center">
+                              <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                            </div>
                           )}
                         </CardHeader>
                         <CardContent className="bg-background/50 backdrop-blur">
@@ -416,13 +515,13 @@ export default function Home() {
               discussing new projects.
             </p>
             <Button asChild className="mt-6">
-              <Link
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=devenpuri03@gmail.com"
+              <a
+                href="mailto:devenpuri03@gmail.com?subject=Portfolio%20Inquiry&body=Hello%20Deven,%0D%0A%0D%0AI%20would%20like%20to%20get%20in%20touch%20with%20you."
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Get in touch <ChevronRight className="ml-1 h-4 w-4" />
-              </Link>
+              </a>
             </Button>
           </div>
         </section>

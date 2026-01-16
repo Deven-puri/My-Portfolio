@@ -8,6 +8,8 @@ import { DM_Sans } from "next/font/google";
 const dmSans = DM_Sans({
   display: "swap",
   subsets: ["latin"],
+  preload: true,
+  fallback: ["system-ui", "arial"],
 });
 
 const MyApp: AppType = ({ Component, pageProps }) => {

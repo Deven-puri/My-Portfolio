@@ -72,17 +72,16 @@ export default function Footer() {
 
         </span>
         
-        <Link
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=devenpuri03@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              passHref
-            >
-          <Button variant={"outline"}>
+        <Button variant={"outline"} asChild>
+          <a
+            href="mailto:devenpuri03@gmail.com?subject=Portfolio%20Inquiry&body=Hello%20Deven,%0D%0A%0D%0AI%20would%20like%20to%20get%20in%20touch%20with%20you."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <MailIcon className="h-4 w-4 md:mr-2" />
             <span className="hidden md:flex">devenpuri03@gmail.com</span>
-          </Button>
-        </Link>
+          </a>
+        </Button>
       </div>
       <div className="h-1 bg-[radial-gradient(closest-side,#8486ff,#42357d,#5d83ff,transparent)] opacity-50" />
     </footer>
