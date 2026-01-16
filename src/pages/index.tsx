@@ -44,7 +44,7 @@ const projects = [
     title: "Netflix-GPT",
     description: "A clone of Netflix using React, Next.js, Tailwind CSS, and TypeScript, with a GPT-4 powered chat interface for movie recommendations",
     image: "/assets/netflix-gpt.webm",
-    href: "https://netflix-gpt-silk-three.vercel.app/",
+    href: "https://netflix-gpt-eight-xi.vercel.app/",
   },
   {
     title: "Food Vila",
