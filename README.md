@@ -59,6 +59,41 @@ $ npm run dev
 
 Now, open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view your portfolio live.
 
+## 📧 EmailJS Setup (Optional)
+
+The portfolio includes a contact form powered by EmailJS. To enable it:
+
+1. **Sign up for EmailJS**: Go to [https://www.emailjs.com/](https://www.emailjs.com/) and create a free account.
+
+2. **Create an Email Service**:
+   - Go to Email Services and add a new service (Gmail, Outlook, etc.)
+   - Follow the setup instructions for your email provider
+
+3. **Create an Email Template**:
+   - Go to Email Templates and create a new template
+   - Use these template variables:
+     - `{{from_name}}` - Sender's name
+     - `{{from_email}}` - Sender's email
+     - `{{message}}` - Message content
+
+4. **Get Your Credentials**:
+   - Service ID: Found in Email Services
+   - Template ID: Found in Email Templates
+   - Public Key: Found in Account > API Keys
+
+5. **Configure Environment Variables**:
+   - Copy `.env.example` to `.env.local`
+   - Fill in your EmailJS credentials:
+   ```env
+   NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
+   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
+   NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+   ```
+
+6. **Restart your development server** for the changes to take effect.
+
+**Note**: If EmailJS is not configured, the contact form will show an error message and users can still use the "Email directly" button as a fallback.
+
 
 ## How do I deploy this?
 

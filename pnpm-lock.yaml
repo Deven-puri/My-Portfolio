@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@emailjs/browser':
+    specifier: ^4.4.1
+    version: 4.4.1
   '@motionone/utils':
     specifier: ^10.17.0
     version: 10.17.0
@@ -1211,6 +1214,11 @@ packages:
       '@babel/helper-string-parser': 7.23.4
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
+
+  /@emailjs/browser@4.4.1:
+    resolution: {integrity: sha512-DGSlP9sPvyFba3to2A50kDtZ+pXVp/0rhmqs2LmbMS3I5J8FSOgLwzY2Xb4qfKlOVHh29EAutLYwe5yuEZmEFg==}
+    engines: {node: '>=14.0.0'}
+    dev: false
 
   /@emnapi/runtime@0.45.0:
     resolution: {integrity: sha512-Txumi3td7J4A/xTTwlssKieHKTGl3j4A1tglBx72auZ49YK7ePY6XZricgIg9mnZT4xPfA+UPCUdnhRuEFDL+w==}
@@ -2582,6 +2590,7 @@ packages:
 
   /acorn-import-assertions@1.9.0(acorn@8.11.3):
     resolution: {integrity: sha512-cmMwop9x+8KFhxvKrKfPYmN6/pKTYYHBqLa0DfvVZcKMJWNyWLnaqND7dx/qn66R7ewM1UX5XMaDVP5wlVTaVA==}
+    deprecated: package has been renamed to acorn-import-attributes
     peerDependencies:
       acorn: ^8
     dependencies:

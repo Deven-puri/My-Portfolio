@@ -83,6 +83,12 @@ const services = [
 export default function Home() {
   const refScrollContainer = useRef(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [isClient, setIsClient] = useState<boolean>(false);
+
+  // Set client-side flag to prevent hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // handle scroll
   useEffect(() => {
@@ -194,16 +200,15 @@ export default function Home() {
               data-scroll-speed=".06"
               className="flex flex-row items-center space-x-1.5 pt-6"
             >
-              <Link
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=devenpuri03@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                passHref
-              >
-                <Button>
+              <Button asChild>
+                <Link
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=devenpuri03@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Get in touch <ChevronRight className="ml-1 h-4 w-4" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
               <Button
                 variant="outline"
                 onClick={() => scrollTo(document.querySelector("#about"))}
@@ -315,14 +320,18 @@ export default function Home() {
                     <Link href={project.href} target="_blank" passHref className="block">
                       <Card id="tilt" className="h-full transition-transform hover:scale-[1.02] cursor-pointer">
                         <CardHeader className="p-0">
-                          <video
-                            src={project.image}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="aspect-video h-full w-full rounded-t-md bg-primary object-cover"
-                          />
+                          {isClient ? (
+                            <video
+                              src={project.image}
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              className="aspect-video h-full w-full rounded-t-md bg-primary object-cover"
+                            />
+                          ) : (
+                            <div className="aspect-video h-full w-full rounded-t-md bg-primary object-cover" />
+                          )}
                         </CardHeader>
                         <CardContent className="bg-background/50 backdrop-blur">
                           <CardTitle className="p-4 text-lg font-semibold tracking-tighter">
@@ -406,14 +415,15 @@ export default function Home() {
               I&apos;m currently available for freelance work and open to
               discussing new projects.
             </p>
-            <Link
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=devenpuri03@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              passHref
-            >
-              <Button className="mt-6">Get in touch</Button>
-            </Link>
+            <Button asChild className="mt-6">
+              <Link
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=devenpuri03@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Get in touch <ChevronRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
         </section>
       </div>
